@@ -26,11 +26,11 @@ Wave = GenerateZeroPhaseSineWave(freq, amp);
 % 15 = CustomTrainTarget (0 = pulses, 1 = bursts)
 % 16 = CustomTrainLoop (0 = no, 1 = yes)
 % 17 = RestingVoltage (-10V to +10V)
-% 128 = TriggerMode (1 = normal, 2 = toggle, 3 = gated, FOR TRIGGER CHANNELS ONLY
+% 128 = TriggerMode (0 = normal, 1 = toggle, 2 = gated, FOR TRIGGER CHANNELS ONLY
 ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
 ProgramPulsePalParam(1, 16, 1); % set loop to true
-ProgramPulsePalParam(1, 10, 10); % loop waveform for 10s
-ProgramPulsePalParam(1, 128, 3); % set trigger mode to gated
+ProgramPulsePalParam(1, 10, 30); % loop waveform for 30s
+ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
 
 % Send waveform
 ConfirmBit = SendCustomWaveform(1, 0.001, Wave);
