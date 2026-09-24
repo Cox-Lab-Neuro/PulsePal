@@ -1,18 +1,9 @@
+function squarePulseTest
+
 % PulsePal test script
 
 % Initialize pulse pal
-% PulsePal('COM13');
-
-% Generate sin wave
-freq = 10;
-maxamp = 1.5;
-onThresh = 0.2; %LED turns on at voltage of 0.2
-amp = maxamp - onThresh;
-Wave = GenerateZeroPhaseSineWave(freq, amp, 1000); %default sampling frequency is 10,000 which decreases set frequency by a factor of 10
-Wave = Wave + 0.2;
-
-%Either set frequency 10x higher than desired with no sample freq input or
-%set sample frequency to 1000 
+PulsePal('COM13');
 
 % Program pulse pal
 % 1 = IsBiphasic (0 = no, 1 = yes)
@@ -33,12 +24,16 @@ Wave = Wave + 0.2;
 % 16 = CustomTrainLoop (0 = no, 1 = yes)
 % 17 = RestingVoltage (-10V to +10V)
 % 128 = TriggerMode (0 = normal, 1 = toggle, 2 = gated, FOR TRIGGER CHANNELS ONLY
-ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
-ProgramPulsePalParam(1, 16, 1); % set loop to true
-ProgramPulsePalParam(1, 10, 1); % loop waveform for 30s
-ProgramPulsePalParam(1, 12, 1); % link to trigger channel 1
-ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
-
-% Send waveform
-ConfirmBit = SendCustomWaveform(1, .001, Wave);
+a= ProgramPulsePalParam(1, 1, 0); % Output amplitude, phase 1
+a= ProgramPulsePalParam(1, 2, 1); % Output amplitude, phase 1
+a= ProgramPulsePalParam(1, 3, 2); % Output amplitude, phase 2
+a= ProgramPulsePalParam(1, 4, 1.0); % Output duration
+a= ProgramPulsePalParam(1, 5, 1.0); % Interphase interval
+a= ProgramPulsePalParam(1, 6, 1.0); % Phase 2 duration
+a= ProgramPulsePalParam(1, 10, 4.0); % Pulse train duration
+a= ProgramPulsePalParam(1, 12, 1); % Link to trigger ch1
+a= ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
+a= ProgramPulsePalParam(1, 16, 0); % set loop to false
+a= ProgramPulsePalParam(1, 17, 0); % resting voltage
+a= ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
 
