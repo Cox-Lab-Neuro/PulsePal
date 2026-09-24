@@ -34,4 +34,22 @@ if nargin > 2
 else
     SamplingFrequency = PulsePalSystem.CycleFrequency/2;
 end 
-Wave = sin(pi:((2*pi)/(SamplingFrequency/Frequency)):3*pi)*Amplitude;
+% Wave = sin(pi:((2*pi)/(SamplingFrequency/Frequency)):3*pi)*Amplitude;
+Wave = sin(0:((2*pi)/(SamplingFrequency/Frequency)):2*pi)*Amplitude;
+
+
+% MATLAB code for sine wave plot
+% % Frequency
+%     freq = 40;  
+% 
+% % Angular frequency
+%     w = 2*pi*freq;  
+% 
+% % Amplitude
+%     A = 1.25;   
+% 
+% % Values of variable argument
+%     t = linspace(0,pi,1000);   
+% 
+% % Sin wave function
+%     Wave = A * sin(w*t);
