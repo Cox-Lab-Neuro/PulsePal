@@ -5,11 +5,8 @@
 
 % Generate sin wave
 freq = 10;
-maxamp = 1.5;
-onThresh = 0.2; %LED turns on at voltage of 0.2
-amp = maxamp - onThresh;
+amp = 2;
 Wave = GenerateZeroPhaseSineWave(freq, amp, 1000); %default sampling frequency is 10,000 which decreases set frequency by a factor of 10
-Wave = Wave + 0.2;
 
 %Either set frequency 10x higher than desired with no sample freq input or
 %set sample frequency to 1000 
@@ -35,7 +32,7 @@ Wave = Wave + 0.2;
 % 128 = TriggerMode (0 = normal, 1 = toggle, 2 = gated, FOR TRIGGER CHANNELS ONLY
 ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
 ProgramPulsePalParam(1, 16, 1); % set loop to true
-ProgramPulsePalParam(1, 10, 1); % loop waveform for 30s
+ProgramPulsePalParam(1, 10, 1); % loop waveform for x seconds
 ProgramPulsePalParam(1, 12, 1); % link to trigger channel 1
 ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
 

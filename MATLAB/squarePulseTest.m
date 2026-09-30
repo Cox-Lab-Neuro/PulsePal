@@ -3,8 +3,14 @@ function squarePulseTest
 % PulsePal test script
 
 % Initialize pulse pal
-PulsePal('COM13');
+% PulsePal('COM13');
 
+freq = 40;
+amp = 2;
+
+%set up pulse
+wave = ones(ceil(1000/freq/2), 1);
+wave = [wave; zeros(ceil(1000/freq/2), 1)]'; %one biphasic pulse based on frequency
 % Program pulse pal
 % 1 = IsBiphasic (0 = no, 1 = yes)
 % 2 = Phase1Voltage (-10V to +10V) 
@@ -24,16 +30,21 @@ PulsePal('COM13');
 % 16 = CustomTrainLoop (0 = no, 1 = yes)
 % 17 = RestingVoltage (-10V to +10V)
 % 128 = TriggerMode (0 = normal, 1 = toggle, 2 = gated, FOR TRIGGER CHANNELS ONLY
-a= ProgramPulsePalParam(1, 1, 0); % Output amplitude, phase 1
-a= ProgramPulsePalParam(1, 2, 1); % Output amplitude, phase 1
-a= ProgramPulsePalParam(1, 3, 2); % Output amplitude, phase 2
-a= ProgramPulsePalParam(1, 4, 1.0); % Output duration
-a= ProgramPulsePalParam(1, 5, 1.0); % Interphase interval
-a= ProgramPulsePalParam(1, 6, 1.0); % Phase 2 duration
-a= ProgramPulsePalParam(1, 10, 4.0); % Pulse train duration
-a= ProgramPulsePalParam(1, 12, 1); % Link to trigger ch1
-a= ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
-a= ProgramPulsePalParam(1, 16, 0); % set loop to false
-a= ProgramPulsePalParam(1, 17, 0); % resting voltage
-a= ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
+% a= ProgramPulsePalParam(1, 1, 0); % Output amplitude, phase 1
+% a= ProgramPulsePalParam(1, 4, pulseDur); % Phase 1 duration
+% a= ProgramPulsePalParam(1, 5, pulseDur); % Interphase interval
+% a= ProgramPulsePalParam(1, 10, pulseDur*2); % Pulse train duration
+% a= ProgramPulsePalParam(1, 12, 1); % Link to trigger ch1
+% a= ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
+% a= ProgramPulsePalParam(1, 16, 1); % set loop to true
+% a= ProgramPulsePalParam(1, 17, 0); % resting voltage
+% a= ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
 
+ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
+ProgramPulsePalParam(1, 16, 1); % set loop to true
+ProgramPulsePalParam(1, 10, 1); % loop waveform for x seconds
+ProgramPulsePalParam(1, 12, 1); % link to trigger channel 1
+ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
+
+% Send waveform
+ConfirmBit = SendCustomWaveform(1, .001, wave);
