@@ -4,9 +4,13 @@
 % PulsePal('COM13');
 
 % Generate sin wave
-freq = 10;
-amp = 2;
-Wave = GenerateZeroPhaseSineWave(freq, amp, 1000); %default sampling frequency is 10,000 which decreases set frequency by a factor of 10
+freq = 20;
+amp = 1;
+sampleInterval = 0.001;
+sampleFreq = 1 / sampleInterval;
+numSamples = round(sampleFreq / freq);
+t = (0:numSamples-1) / sampleFreq;
+Wave = (amp - 0.2) / 2 * sin(2*pi*freq*t - pi/2) + (amp + 0.2) / 2;
 
 %Either set frequency 10x higher than desired with no sample freq input or
 %set sample frequency to 1000 
@@ -32,7 +36,7 @@ Wave = GenerateZeroPhaseSineWave(freq, amp, 1000); %default sampling frequency i
 % 128 = TriggerMode (0 = normal, 1 = toggle, 2 = gated, FOR TRIGGER CHANNELS ONLY
 ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
 ProgramPulsePalParam(1, 16, 1); % set loop to true
-ProgramPulsePalParam(1, 10, 1); % loop waveform for x seconds
+ProgramPulsePalParam(1, 10, 20); % loop waveform for x seconds
 ProgramPulsePalParam(1, 12, 1); % link to trigger channel 1
 ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
 
