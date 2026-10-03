@@ -1,12 +1,15 @@
 % PulsePal test script
+%ConfirmBit = ProgramPulsePalParam(Channel, ParamCode, ParamValue)
 
 % Initialize pulse pal
 % PulsePal('COM13');
+trigChannel = 1;
+outputChannel = 1;
 
 % Generate sin wave
-freq = 20;
-amp = 1;
-sampleInterval = 0.001;
+freq = 40;
+amp = 2.1;
+sampleInterval = 0.0001;
 sampleFreq = 1 / sampleInterval;
 numSamples = round(sampleFreq / freq);
 t = (0:numSamples-1) / sampleFreq;
@@ -34,12 +37,18 @@ Wave = (amp - 0.2) / 2 * sin(2*pi*freq*t - pi/2) + (amp + 0.2) / 2;
 % 16 = CustomTrainLoop (0 = no, 1 = yes)
 % 17 = RestingVoltage (-10V to +10V)
 % 128 = TriggerMode (0 = normal, 1 = toggle, 2 = gated, FOR TRIGGER CHANNELS ONLY
-ProgramPulsePalParam(1, 14, 1); % send to custom train slot 1
-ProgramPulsePalParam(1, 16, 1); % set loop to true
-ProgramPulsePalParam(1, 10, 20); % loop waveform for x seconds
-ProgramPulsePalParam(1, 12, 1); % link to trigger channel 1
-ProgramPulsePalParam(1, 128, 2); % set trigger mode to pulse-gated
+ProgramPulsePalParam(outputChannel, 14, outputChannel); % custom train slot corresponds to output channel since amplitudes will vary
+ProgramPulsePalParam(outputChannel, 16, 1); % set loop to true
+ProgramPulsePalParam(outputChannel, 10, 10); % loop waveform for x seconds
+if trigChannel == 1
+    ProgramPulsePalParam(outputChannel, 12, 1); % link channel to trigger channel 1?
+    ProgramPulsePalParam(outputChannel, 13, 0); % link channel to trigger channel 2?
+elseif trigChannel == 2
+    ProgramPulsePalParam(outputChannel, 12, 0); % link channel to trigger channel 1?
+    ProgramPulsePalParam(outputChannel, 13, 1); % link channel to trigger channel 2?
+end
+ProgramPulsePalParam(outputChannel, 128, 2); % set trigger mode to pulse-gated
 
 % Send waveform
-ConfirmBit = SendCustomWaveform(1, .001, Wave);
+ConfirmBit = SendCustomWaveform(outputChannel, .0001, Wave); %Send to custom trainslot corresponding to output channel
 
