@@ -1,4 +1,4 @@
-from PulsePal import PulsePalObject
+from PulsePal_Mod.PulsePal import PulsePalObject
 from generateSineWave import generateSineWave
 
 
@@ -69,7 +69,7 @@ for channel in range(1, 5):
     pulse_pal.setRampEnabled(channel, False)
     pulse_pal.setRampDuration(channel, 0)
 
-# ---- OUTPUT CHANNEL 1 (SINE WAVE) ----
+# ---- CONFIGURE PULSE PAL ----
 # Goal:
 # - Output a single cycle of a 40 Hz sine wave at 2.1 V peak through channel 1.
 # - The waveform spans [0.2 V, 2.1 V] with a -pi/2 phase shift so it starts at
@@ -91,7 +91,7 @@ freq = 40           # Hz
 amp = 2.1           # volts (peak)
 sample_interval = 0.0001  # seconds (10 kHz)
 
-sine_voltages, sample_width = create_sine_wave(freq, amp, sample_interval)
+sine_voltages = generateSineWave(freq, amp, sample_interval)
 
 # Verify sample count is within Pulse Pal's 10,000-sample limit.
 assert len(sine_voltages) <= 10_000, (
@@ -101,29 +101,32 @@ assert len(sine_voltages) <= 10_000, (
 
 # 2) Store the sine waveform in custom train slot
 custom_train_slot = 2
-pulse_pal.sendCustomWaveform(custom_train_slot, sample_width, sine_voltages)
+pulse_pal.sendCustomWaveform(custom_train_slot, sample_interval, sine_voltages)
 
-# 3) Configure output channel
+# 3) Configure output and trigger channels
 output_channel = 2
 pulse_pal.programOutputChannelParam("customTrainID", output_channel, custom_train_slot)
-pulse_pal.programOutputChannelParam("phase1Duration", output_channel, sample_width)
+pulse_pal.programOutputChannelParam("customTrainTarget", output_channel, 1) # 1 = output channel
+pulse_pal.programOutputChannelParam("customTrainLoop", output_channel, 1) # 1 = loop waveform
+pulse_pal.programOutputChannelParam("customTrainDuration", output_channel, 35) # loop waveform for 35 seconds #Max set in MPC code is 30s -- make sure ramp happens
 
-# 4) Enable ramp on channel 1 (0.1 s) as a graceful-stop fallback.
+
+#Link to trigger channel matching output channel 
+if output_channel == 1:
+    pulse_pal.programOutputChannelParam("linkTriggerChannel1", output_channel, 1)
+elif output_channel == 2:
+    pulse_pal.programOutputChannelParam("linkTriggerChannel2", output_channel, 1)
+
+# Set trigger mode to pulse-gated (2)
+pulse_pal.programTriggerChannelParam("triggerMode", output_channel, 2) # 2 = pulse-gated mode
+
+# 4) Enable ramp on output channel (0.1 s)
 pulse_pal.setRampEnabled(output_channel, True)
 pulse_pal.setRampDuration(output_channel, 0.1)  # seconds
-
-# 5) Link trigger channel 1 to output channel 1.
-trigger_channel = 2
-pulse_pal.programOutputChannelParam("linkTriggerChannel1", output_channel, 1)
-
-# 6) Set trigger channel 1 to normal mode so a single TTL pulse starts one cycle.
-pulse_pal.programTriggerChannelParam("triggerMode", trigger_channel, 2) # 2 = pulse-gated mode
-
 
 # ---- SAVE SETTINGS ----
 # Save configuration to a file (e.g., default.pps).
 pulse_pal.saveSDSettings("default.pps")
-
 
 # ---- CONFIRMATION ----
 print("Pulse Pal configured successfully!")
