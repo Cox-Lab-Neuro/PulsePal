@@ -45,8 +45,7 @@ def sineRamp(frequency, amplitude, sample_interval, ramp_duration):
     ramp = []
     for ii in range(num_cycles):
         new_amp = amplitude*multiplier[ii]
-        print(new_amp)
-        voltages = generateSineWave(frequency=frequency, amplitude=new_amp, sample_interval=sample_interval)
+        voltages = sineWave(frequency=frequency, amplitude=new_amp, sample_interval=sample_interval)
         ramp.extend(voltages)
     ramp = np.array(ramp)
 
