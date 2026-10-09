@@ -1,5 +1,5 @@
-from PulsePal_Mod.PulsePal import PulsePalObject
-from generateSineWave import generateSineWave
+from PulsePal import PulsePalObject
+from generateSineWave import sineWave, sineRamp
 
 
 # ---- PULSE PAL WIKI ----
@@ -62,12 +62,10 @@ for channel in range(1, 5):
     pulse_pal.programOutputChannelParam("pulseTrainDelay", channel, 0)
     pulse_pal.programOutputChannelParam("customTrainID", channel, 0)
     pulse_pal.programOutputChannelParam("customTrainTarget", channel, 0)
-    pulse_pal.programOutputChannelParam("customTrainLoop", channel, 0)
+    pulse_pal.programOutputChannelParam("customTrainLoop", channel, 1)
     pulse_pal.programOutputChannelParam("restingVoltage", channel, 0)
     pulse_pal.programOutputChannelParam("linkTriggerChannel1", channel, 0)
     pulse_pal.programOutputChannelParam("linkTriggerChannel2", channel, 0)
-    pulse_pal.setRampEnabled(channel, False)
-    pulse_pal.setRampDuration(channel, 0)
 
 # ---- CONFIGURE PULSE PAL ----
 # Goal:
@@ -83,15 +81,16 @@ for channel in range(1, 5):
 # 10,000-sample limit.
 #
 # Triggering:
-# Linked to trigger channel 1 in pulse-gated mode. High to low transition starts playback, low to high transition stops playback
+# Use pulse-gated mode. Low to high transition starts playback, high to low transition stops playback
 
 
-# 1) Build the sine wave waveform.
+# 1) Build the sine wave waveform and ramp
 freq = 40           # Hz
-amp = 2.1           # volts (peak)
-sample_interval = 0.0001  # seconds (10 kHz)
+amp = 2.4          # volts (peak)
+sample_interval = 0.0001  # second
+loop_dur = 30 # how long to loop the sine wave (change for testing)
 
-sine_voltages = generateSineWave(freq, amp, sample_interval)
+sine_voltages = list(sineWave(freq, amp, sample_interval))
 
 # Verify sample count is within Pulse Pal's 10,000-sample limit.
 assert len(sine_voltages) <= 10_000, (
@@ -100,33 +99,24 @@ assert len(sine_voltages) <= 10_000, (
 )
 
 # 2) Store the sine waveform in custom train slot
-custom_train_slot = 2
-pulse_pal.sendCustomWaveform(custom_train_slot, sample_interval, sine_voltages)
-
-# 3) Configure output and trigger channels
 output_channel = 2
-pulse_pal.programOutputChannelParam("customTrainID", output_channel, custom_train_slot)
-pulse_pal.programOutputChannelParam("customTrainTarget", output_channel, 1) # 1 = output channel
+pulse_pal.sendCustomWaveform(output_channel, sample_interval, sine_voltages)
+
+# 3) Configure output channel
+pulse_pal.programOutputChannelParam("customTrainID", output_channel, output_channel) #match custom train slot and output channel
+pulse_pal.programOutputChannelParam("phase1Duration", output_channel, sample_interval)  # Set correct pulse width for the waveform
 pulse_pal.programOutputChannelParam("customTrainLoop", output_channel, 1) # 1 = loop waveform
-pulse_pal.programOutputChannelParam("customTrainDuration", output_channel, 35) # loop waveform for 35 seconds #Max set in MPC code is 30s -- make sure ramp happens
+pulse_pal.programOutputChannelParam("pulseTrainDuration", output_channel, loop_dur) # loop waveform for 30s
 
-
-#Link to trigger channel matching output channel 
+	#Link to trigger channel matching output channel 
 if output_channel == 1:
     pulse_pal.programOutputChannelParam("linkTriggerChannel1", output_channel, 1)
 elif output_channel == 2:
     pulse_pal.programOutputChannelParam("linkTriggerChannel2", output_channel, 1)
 
-# Set trigger mode to pulse-gated (2)
+	# Set trigger mode to pulse-gated (2)
 pulse_pal.programTriggerChannelParam("triggerMode", output_channel, 2) # 2 = pulse-gated mode
 
-# 4) Enable ramp on output channel (0.1 s)
-pulse_pal.setRampEnabled(output_channel, True)
-pulse_pal.setRampDuration(output_channel, 0.1)  # seconds
-
-# ---- SAVE SETTINGS ----
-# Save configuration to a file (e.g., default.pps).
-pulse_pal.saveSDSettings("default.pps")
 
 # ---- CONFIRMATION ----
 print("Pulse Pal configured successfully!")
