@@ -34,7 +34,30 @@ def configure_pulse_pal(pulse_pal, output_channel, frequency, amplitude, sample_
         # Set trigger mode to pulse-gated (2)
     pulse_pal.programTriggerChannelParam("triggerMode", output_channel, 2) # 2 = pulse-gated mode
 
+def resetPulsePal(pulse_pal):
+    # ---- CLEAR EXISTING SETTINGS ----
+# IMPORTANT: Always clear channel configuration before programming new trains,
+# otherwise values previously stored in Pulse Pal memory may persist.
+    for channel in range(1, 5):
+        pulse_pal.programOutputChannelParam("isBiphasic", channel, 0)
+        pulse_pal.programOutputChannelParam("phase1Voltage", channel, 0)
+        pulse_pal.programOutputChannelParam("phase2Voltage", channel, 0)
+        pulse_pal.programOutputChannelParam("phase1Duration", channel, 0)
+        pulse_pal.programOutputChannelParam("phase2Duration", channel, 0)
+        pulse_pal.programOutputChannelParam("interPhaseInterval", channel, 0)
+        pulse_pal.programOutputChannelParam("interPulseInterval", channel, 0)
+        pulse_pal.programOutputChannelParam("burstDuration", channel, 0)
+        pulse_pal.programOutputChannelParam("interBurstInterval", channel, 0)
+        pulse_pal.programOutputChannelParam("pulseTrainDuration", channel, 0)
+        pulse_pal.programOutputChannelParam("pulseTrainDelay", channel, 0)
+        pulse_pal.programOutputChannelParam("customTrainID", channel, 0)
+        pulse_pal.programOutputChannelParam("customTrainTarget", channel, 0)
+        pulse_pal.programOutputChannelParam("customTrainLoop", channel, 1)
+        pulse_pal.programOutputChannelParam("restingVoltage", channel, 0)
+        pulse_pal.programOutputChannelParam("linkTriggerChannel1", channel, 0)
+        pulse_pal.programOutputChannelParam("linkTriggerChannel2", channel, 0)
 
+    
 
 def sineWave(frequency, amplitude, sample_interval):
     """ Generate one cycle of a sine wave.  The wave is phase-shifted by -pi/2 so it starts at its minimum value (0 V) and rises smoothly to its maximum (amplitude).
