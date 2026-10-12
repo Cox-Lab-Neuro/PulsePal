@@ -34,6 +34,8 @@ def configure_pulse_pal(pulse_pal, output_channel, frequency, amplitude, sample_
         # Set trigger mode to pulse-gated (2)
     pulse_pal.programTriggerChannelParam("triggerMode", output_channel, 2) # 2 = pulse-gated mode
 
+    print(f"Pulse pal configured for channel {output_channel}")
+
 def resetPulsePal(pulse_pal):
     # ---- CLEAR EXISTING SETTINGS ----
 # IMPORTANT: Always clear channel configuration before programming new trains,

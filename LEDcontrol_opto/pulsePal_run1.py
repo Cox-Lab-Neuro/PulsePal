@@ -16,9 +16,11 @@ sample_interval = 0.0001  # second
 loop_dur = 30 # how long to loop the sine wave (change for testing)
 
 # ---- REMY, BOX 5 ----
-amp = 4.3; '''UPDATE HERE TO CHANGE POWER FOR BOX 5'''
-configure_pulse_pal(output_channel=1, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
+amp = 3.0; '''UPDATE HERE TO CHANGE POWER FOR BOX 5'''
+configure_pulse_pal(pulse_pal=pulse_pal, output_channel=1, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
 
 # ---- EMILE, BOX 7 ----
-amp = 2.9; '''UPDATE HERE TO CHANGE POWER FOR BOX 7'''
-configure_pulse_pal(output_channel=2, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
+amp = 1.8; '''UPDATE HERE TO CHANGE POWER FOR BOX 7'''
+configure_pulse_pal(pulse_pal=pulse_pal, output_channel=2, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
+
+print("Pulse pal configured for Remy and Emile")
