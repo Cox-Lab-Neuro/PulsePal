@@ -86,7 +86,7 @@ for channel in range(1, 5):
 
 # 1) Build the sine wave waveform and ramp
 freq = 40           # Hz
-amp = 2.4          # volts (peak)
+amp = 4.3        # volts (peak)
 sample_interval = 0.0001  # second
 loop_dur = 30 # how long to loop the sine wave (change for testing)
 
@@ -99,7 +99,7 @@ assert len(sine_voltages) <= 10_000, (
 )
 
 # 2) Store the sine waveform in custom train slot
-output_channel = 2
+output_channel = 1
 pulse_pal.sendCustomWaveform(output_channel, sample_interval, sine_voltages)
 
 # 3) Configure output channel
