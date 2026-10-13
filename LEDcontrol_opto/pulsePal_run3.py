@@ -23,4 +23,4 @@ configure_pulse_pal(pulse_pal= pulse_pal, output_channel=1, frequency= freq, amp
 amp = 4.3; '''UPDATE HERE TO CHANGE POWER FOR BOX 7'''
 configure_pulse_pal(pulse_pal= pulse_pal, output_channel=2, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
 
-print("Pulse pal configured for CorbinGPT and Insincere")
+print("Pulse pal configured for CorbinGPT in Box 5 and Insincere in Box 7")
