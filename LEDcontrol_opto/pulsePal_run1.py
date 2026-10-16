@@ -4,7 +4,7 @@ from Shannon_pulsepal import sineWave, sineRamp, configure_pulse_pal, resetPulse
 
 # ---- Create pulsepal object ----
 # Update with the correct serial port address for your system.
-address = "COM13"
+address = "COM13" #COM13 for boxes 5 and 7, COM5 for boxes 6 and 8
 pulse_pal = PulsePalObject(address)
 
 # ---- clear existing settings ----

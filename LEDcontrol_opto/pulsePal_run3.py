@@ -16,7 +16,7 @@ sample_interval = 0.0001  # second
 loop_dur = 30 # how long to loop the sine wave (change for testing)
 
 # ---- CORBINGPT, BOX 5 ----
-amp = 3.2; '''UPDATE HERE TO CHANGE POWER FOR BOX 5'''
+amp = 2.8; '''UPDATE HERE TO CHANGE POWER FOR BOX 5'''
 configure_pulse_pal(pulse_pal= pulse_pal, output_channel=1, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
 
 # ---- INSINCERE, BOX 7 ----
