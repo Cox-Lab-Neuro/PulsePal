@@ -76,10 +76,10 @@ def sineWave(frequency, amplitude, sample_interval):
     num_samples = round(sample_freq / frequency)
     t = np.arange(num_samples) / sample_freq
 
-    # Amplitude of the sinusoid so the wave spans [0, amplitude]
-    sine_amp = amplitude / 2
+    # Amplitude of the sinusoid so the wave spans [0.15, amplitude]
+    sine_amp = (amplitude-0.15) / 2
     # DC offset so the midpoint sits at amplitude / 2
-    dc_offset = amplitude / 2
+    dc_offset = (amplitude+0.15) / 2
     # Phase shift of -pi/2 makes the wave start at its minimum (0.2 V)
     voltages = sine_amp * np.sin(2 * np.pi * frequency * t - np.pi / 2) + dc_offset
 
