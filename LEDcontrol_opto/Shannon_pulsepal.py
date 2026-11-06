@@ -80,7 +80,7 @@ def sineWave(frequency, amplitude, sample_interval):
     sine_amp = (amplitude-0.15) / 2
     # DC offset so the midpoint sits at amplitude / 2
     dc_offset = (amplitude+0.15) / 2
-    # Phase shift of -pi/2 makes the wave start at its minimum (0.2 V)
+    # Phase shift of -pi/2 makes the wave start at its minimum (0.15 V)
     voltages = sine_amp * np.sin(2 * np.pi * frequency * t - np.pi / 2) + dc_offset
 
     return voltages
