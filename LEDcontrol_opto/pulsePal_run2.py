@@ -20,7 +20,7 @@ amp = 0; '''UPDATE HERE TO CHANGE POWER FOR BOX 6'''
 configure_pulse_pal(pulse_pal= pulse_pal, output_channel=1, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
 
 # ---- BRYCE, BOX 8 ----
-amp = 4.5; '''UPDATE HERE TO CHANGE POWER FOR BOX 8'''
+amp = 1.9; '''UPDATE HERE TO CHANGE POWER FOR BOX 8'''
 configure_pulse_pal(pulse_pal= pulse_pal, output_channel=2, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
 
 print("Pulse pal configured for Bryce in Box 8")
