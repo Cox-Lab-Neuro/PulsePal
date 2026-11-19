@@ -1,4 +1,5 @@
 import numpy as np
+import json
 from PulsePal import PulsePalObject
 
 def configure_pulse_pal(pulse_pal, output_channel, frequency, amplitude, sample_interval, loop_duration):
@@ -35,6 +36,14 @@ def configure_pulse_pal(pulse_pal, output_channel, frequency, amplitude, sample_
     pulse_pal.programTriggerChannelParam("triggerMode", output_channel, 2) # 2 = pulse-gated mode
 
     print(f"Pulse pal configured for channel {output_channel}")
+
+def getAmps(mouseID):
+    ''' Return the voltage amplitude in amplitudes.json for the specified mouse'''
+    with open("amplitudes.json", "r") as file:
+        data = json.load(file)
+
+    return data[mouseID]
+
 
 def resetPulsePal(pulse_pal):
     # ---- CLEAR EXISTING SETTINGS ----
