@@ -17,7 +17,7 @@ loop_dur = 30 # how long to loop the sine wave (change for testing)
 
 
 # ---- INSINCERE, BOX 8 ----
-amp = 3.0; '''UPDATE HERE TO CHANGE POWER FOR BOX 8'''
+amp = 2.5; '''UPDATE HERE TO CHANGE POWER FOR BOX 8'''
 configure_pulse_pal(pulse_pal= pulse_pal, output_channel=2, frequency= freq, amplitude= amp, sample_interval=sample_interval, loop_duration=loop_dur)
 
 print("Pulse pal configured for Insincere in Box 8")
